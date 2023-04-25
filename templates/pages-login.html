@@ -1,0 +1,190 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Africom Self Service</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Favicons -->
+  <link href="assets/img/Africom-background.png" rel="icon">
+  <link href="assets/img/Africom-background.png" rel="apple-touch-icon">
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  <!-- Google Fonts -->
+  <link href="https://fonts.gstatic.com" rel="preconnect">
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+  
+  <!-- Vendor CSS Files -->
+  <link href="{%static 'assets/vendor/bootstrap/css/bootstrap.min.css'%}" rel="stylesheet">
+  <link href="{%static 'assets/vendor/bootstrap-icons/bootstrap-icons.css'%}" rel="stylesheet">
+  <link href="{%static 'assets/vendor/boxicons/css/boxicons.min.css'%}" rel="stylesheet">
+  <link href="{%static 'assets/vendor/quill/quill.snow.css'%}" rel="stylesheet">
+  <link href="{%static 'assets/vendor/quill/quill.bubble.css'%}" rel="stylesheet">
+  <link href="{%static 'assets/vendor/remixicon/remixicon.css'%}" rel="stylesheet">
+  <link href="{%static 'assets/vendor/simple-datatables/style.css'%}" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+  <!-- Template Main CSS File -->
+  <link href="{%static 'assets/css/style.css'%}" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <main>
+    <div class="container">
+
+      <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
+        <div class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
+
+              <div class="d-flex align-items-center justify-content-between">
+                <a href="index.html" class="logo d-flex align-items-center">
+                  <img src="assets/img/Africom-background.png" alt="">
+             
+                </a>
+              </div><!-- End Logo -->
+
+              <div class="card mb-3">
+
+                <div class="card-body">
+
+                  <div class="pt-4 pb-2">
+                    <h1 class="card-title text-center pb-0 fs-4">Africom Self Services</h1>
+                    <p class="text-center small">Enter your username & password to login</p>
+                    <!-- Button trigger modal -->
+ 
+<button type="button" hidden class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter"  id="mod">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">To finish registration, a confirmition number will be sent to: {{request.session.mobile}} . You can also edit the number and press Continue</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="finishregistering" method="post">
+     
+        {% csrf_token %}
+          <input type="23456" style="width: 100%;border:0 0 0 1px solid; height: 25px;" value={{request.session.mobile}} required name="mobile">
+    
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Continue</button>
+      </div>
+    </form>
+
+    </div>
+  </div>
+</div>
+                  </div>
+
+                  <form class="row g-3 needs-validation" novalidate action="{% url 'loginuser'%}" method="post">
+                    {% csrf_token %}
+
+                    {%for i in messages%}
+                    <div class="alert alert-danger" role="alert">
+                      {{i}}
+                    </div>
+                    
+                    {% endfor %}
+                    {%if request.session.completed == False %}
+                    <script>
+                      var btn=document.getElementById('mod');
+                      btn.click();
+
+                    </script>
+                    
+                    {%endif%}
+                    
+
+                    <div class="col-12">
+                      <label for="yourUsername" class="form-label">Number</label>
+                      <div class="input-group has-validation">
+                        <input type="text" name="number" class="form-control" id="yourUsername" required {%if form.is_bound%} value="{{form.number.value}}"{%endif%}>
+                        <div class="invalid-feedback">Please enter your username.</div>
+                       
+                        
+                      </div>
+                      {% for error in form.number.errors %}
+                      <span style="color: rgb(209, 107, 107);">{{error}}</span>
+                     {%endfor%}
+                    </div>
+
+                    <div class="col-12">
+                      <label for="yourPassword" class="form-label">Password</label>
+                      <input type="password" name="password" class="form-control" id="yourPassword" required >
+                      <div class="invalid-feedback">Please enter your password!</div>
+                      {% for error in form.password.errors %}
+                      <span style="color: rgb(209, 107, 107);">{{error}}</span>
+                     {%endfor%}
+                    </div>
+
+                    <div class="col-12">
+                      <button class="btn btn-primary w-100" type="submit" style="background-color: green;">Login</button>
+                    </div>
+                    <div class="col-12">
+                      <p class="small mb-0">Don't have accounts? <a href="/choose">Create an account</a></p>
+                    </div>
+                  </form>
+
+                </div>
+              </div>
+              <a href="paynow">paynow</a>
+
+              <div class="credits">
+                <!-- All the links in the footer should remain intact. -->
+                <!-- You can delete the links only if you purchased the pro version. -->
+                <!-- Licensing information: https://bootstrapmade.com/license/ -->
+                <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/ -->
+                Designed by <a href="#">Africom</a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main><!-- End #main -->
+
+  <a href="#" class="back-to-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="assets/vendor/apexcharts/apexcharts.min.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/chart.js/chart.umd.js"></script>
+  <script src="assets/vendor/echarts/echarts.min.js"></script>
+  <script src="assets/vendor/quill/quill.min.js"></script>
+  <script src="assets/vendor/simple-datatables/simple-datatables.js"></script>
+  <script src="assets/vendor/tinymce/tinymce.min.js"></script>
+  <script src="assets/vendor/php-email-form/validate.js"></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+  <!-- Template Main JS File -->
+  <script src="assets/js/main.js"></script>
+
+</body>
+
+</html>

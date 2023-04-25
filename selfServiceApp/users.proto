@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+package users;
+option go_package = "momariserver/services/users/userpb";
+
+message request {
+    string username = 1;
+    string domain = 2;
+    string password = 3;
+    double balance = 4;
+    string email = 5;
+    string package_id = 6;
+    string token = 7;
+    string verificationCode = 8;
+    string debugInfo = 9;
+    string cdma = 10;
+}
+
+message response {
+    string username = 1;
+    string domain = 2;
+    string password = 3;
+    double balance = 4;
+    string email = 5;  
+    Status status = 6;
+    string token = 7;
+    Error error = 8;
+    Info info = 9;
+    Success success = 10;
+    string alias = 11;
+}
+
+
+enum Status {
+    INFORMATION = 0;
+    SUCCESS = 1;
+    ERROR = 2;
+    FAILED = 3;
+}
+
+message Error {
+    string localizedDescription = 1;
+    string debugDescription = 2;
+}
+
+message Success {
+    string localizedDescription = 1;
+    string debugDescription = 2;
+}
+
+message Info {
+    string information = 1;
+}
+
+
+service userService {
+    rpc SendVerificationCode(request) returns (response);
+    rpc Register(request) returns (response);
+    rpc GetBalance(request) returns (response);
+    rpc RegisterCDMA (request) returns (response);
+   
+
+}

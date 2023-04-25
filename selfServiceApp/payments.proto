@@ -1,0 +1,156 @@
+syntax = "proto3";
+
+package payments;
+option go_package = "momariserver/services/payments/paymentspb";
+
+// AUTHENTICATION ::: please find guroo.crt file to be used for authentication in below path
+// ${project_home}/configs/certs/guroo.crt
+
+enum PaymentStatus {
+    SUCCESS = 0;
+    FAILED = 1;
+    PENDING = 2;
+    DISPUTED = 3;
+}
+  
+enum PaymentMethod {
+    PAYPAL = 0;
+    PAYNOW = 1;
+    VOUCHER = 2;
+    STRIPE = 3;
+}
+
+message Details {
+    string username = 1;
+    string domain = 2;
+    string purchaseId = 3;
+}
+
+message Payment {
+    string username = 1;  // username of the user
+    double amount = 2; // amount to be paid
+    string domain = 3; // domain of the user
+    PaymentStatus status = 4; // status of the payment
+    PaymentMethod method = 5; // method of the payment
+    string transaction = 998; // additional details of transaction
+    string created = 999;  // created time
+    string paymentType = 1000; // token to be used for payment   
+}
+
+// SERVICES USING ::: PaypalPayment(), StripePayment(), PayNowPayment(), VouchPayment()
+message request {
+    Payment payment = 1;
+    string object = 2;
+}
+
+message transfer {
+    Payment source = 1;
+    Payment destination = 2;
+}
+
+message Gift {
+    string source = 1;
+    string destination = 2;
+    string domain = 3;
+    double amount = 4;
+}
+
+// SERVICES USING ::: PPGetToken(), GetPayment(), ListPayments()
+message information {
+    string username = 1;
+    string domain = 2;
+    string source = 3;
+    string destination = 4;
+    double amount = 5;
+    string email = 6;
+    int64 count = 7;
+}
+
+// RESPONSE 
+// with information for respective request
+message response {
+    string result = 1;
+}
+
+message product {
+    string packageName = 1;
+    string productId = 2;
+    string token = 3;
+    string username = 4;
+    string domain = 5;
+}
+
+message verified {
+
+    bool isVerified = 1;
+}
+
+// ANCHOR: new official 
+message requests {
+    string username = 1;
+    string domain = 2;
+    string password = 3;
+    double balance = 4;
+    string email = 5;
+    string package_id = 6;
+    string token = 7;
+    string receiver = 8;
+    double amount = 9;
+    string voucherPin = 10;
+    string debugInfo = 11;
+    string transactionId = 12;
+}
+
+message reply {
+    string username = 1;
+    string domain = 2;
+    string password = 3;
+    double balance = 4;
+    string email = 5;  
+    Status status = 6;
+    string token = 7;
+    Error error = 8;
+    Info info = 9;
+    Success success = 10;
+}
+
+enum Status {
+    INFORMATION = 0;
+    SUCCESSFUL = 1;
+    ERROR = 2;
+    FAILURE = 3;
+}
+
+message Error {
+    string localizedDescription = 1;
+    string debugDescription = 2;
+}
+
+message Success {
+    string localizedDescription = 1;
+    string debugDescription = 2;
+}
+
+message Info {
+    string information = 1;
+}
+
+
+service paymentsService {
+  
+     /*
+    *   ****** Topup Account ********
+    *   confirm and authorise taura user account topup payment
+    *
+    *   RETURNS response.result:
+    *       onSuccess: "success"
+    *       onFailed: "failed" || "payment unsuccessful"(failed to validate payment) || ERROR (+reason)
+    */
+
+    rpc MasweraseiPayNow(Payment) returns (response);   //FOR MASWERASEI PAYNOW (Endpoind for maswerasei api to retail)
+    rpc RedeemVoucher(requests) returns (reply);
+
+
+   
+
+}
